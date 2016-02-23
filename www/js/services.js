@@ -1,87 +1,93 @@
 (function () {
 
-  angular.module('starter.services', [])
-    .factory('Chats', Chats)
-    .factory('Auth', Auth)
-    .service('DataService', DataService)
-    .constant('sessionData', 'firebase:session::firebooklogin');
+    angular.module('starter.services', [])
+        .factory('Chats', Chats)
+        .factory('Auth', Auth)
+        .service('DataService', DataService)
+        .constant('sessionData', 'firebase:session::firebooklogin');
 
-  DataService.$inject = ['sessionData', '$window'];
-  function DataService(sessionData, $window) {
-    var ds = this;
-    ds.data = {};
-    ds.logout = logout;
-    ds.setData = setData;
-    ds.initData = initData;
+    DataService.$inject = ['sessionData', '$window'];
+    function DataService(sessionData, $window) {
+        var ds = this;
+        ds.data = {};
+        ds.logout = logout;
+        ds.setData = setData;
+        ds.initData = initData;
+        ds.isLoggedIn = isLoggedIn;
 
-    initData();
+        initData();
 
-    function initData() {
-      ds.data = JSON.parse($window.localStorage[sessionData] || '{}');
-      return ds.data;
-    }
-
-    function setData(data) {
-      ds.data = data;
-      $window.localStorage[sessionData] = JSON.stringify(data);
-    }
-    function logout() {
-      setData({});
-    }
-  }
-
-  Auth.$inject = ['rootRef', '$firebaseAuth'];
-  function Auth(rootRef, $firebaseAuth) {
-    return $firebaseAuth(rootRef);
-  }
-
-  function Chats() {
-    // Might use a resource here that returns a JSON array
-
-    // Some fake testing data
-    var chats = [{
-      id: 0,
-      name: 'Ben Sparrow',
-      lastText: 'You on your way?',
-      face: 'img/ben.png'
-    }, {
-      id: 1,
-      name: 'Max Lynx',
-      lastText: 'Hey, it\'s me',
-      face: 'img/max.png'
-    }, {
-      id: 2,
-      name: 'Adam Bradleyson',
-      lastText: 'I should buy a boat',
-      face: 'img/adam.jpg'
-    }, {
-      id: 3,
-      name: 'Perry Governor',
-      lastText: 'Look at my mukluks!',
-      face: 'img/perry.png'
-    }, {
-      id: 4,
-      name: 'Mike Harrington',
-      lastText: 'This is wicked good ice cream.',
-      face: 'img/mike.png'
-    }];
-
-    return {
-      all: function () {
-        return chats;
-      },
-      remove: function (chat) {
-        chats.splice(chats.indexOf(chat), 1);
-      },
-      get: function (chatId) {
-        for (var i = 0; i < chats.length; i++) {
-          if (chats[i].id === parseInt(chatId)) {
-            return chats[i];
-          }
+        function initData() {
+            ds.data = JSON.parse($window.localStorage[sessionData] || '{}');
+            return ds.data;
         }
-        return null;
-      }
-    };
-  }
+
+        function setData(data) {
+            ds.data = data;
+            $window.localStorage[sessionData] = JSON.stringify(data);
+        }
+
+        function logout() {
+            setData({});
+        }
+
+        function isLoggedIn() {
+            return ds.data.facebook || ds.data.google;
+        }
+    }
+
+    Auth.$inject = ['rootRef', '$firebaseAuth'];
+    function Auth(rootRef, $firebaseAuth) {
+        return $firebaseAuth(rootRef);
+    }
+
+    function Chats() {
+        // Might use a resource here that returns a JSON array
+
+        // Some fake testing data
+        var chats = [{
+            id: 0,
+            name: 'Ben Sparrow',
+            lastText: 'You on your way?',
+            face: 'img/ben.png'
+        }, {
+            id: 1,
+            name: 'Max Lynx',
+            lastText: 'Hey, it\'s me',
+            face: 'img/max.png'
+        }, {
+            id: 2,
+            name: 'Adam Bradleyson',
+            lastText: 'I should buy a boat',
+            face: 'img/adam.jpg'
+        }, {
+            id: 3,
+            name: 'Perry Governor',
+            lastText: 'Look at my mukluks!',
+            face: 'img/perry.png'
+        }, {
+            id: 4,
+            name: 'Mike Harrington',
+            lastText: 'This is wicked good ice cream.',
+            face: 'img/mike.png'
+        }];
+
+        return {
+            all: function () {
+                return chats;
+            },
+            remove: function (chat) {
+                chats.splice(chats.indexOf(chat), 1);
+            },
+            get: function (chatId) {
+                for (var i = 0; i < chats.length; i++) {
+                    if (chats[i].id === parseInt(chatId)) {
+                        return chats[i];
+                    }
+                }
+                return null;
+            }
+        };
+    }
 
 }());
