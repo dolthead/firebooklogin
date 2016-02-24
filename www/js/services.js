@@ -1,44 +1,40 @@
 (function () {
 
     angular.module('starter.services', [])
-        .factory('Chats', Chats)
         .factory('Auth', Auth)
         .service('DataService', DataService)
-        .constant('sessionData', 'firebase:session::firebooklogin');
+        .factory('Chats', Chats);
 
-    DataService.$inject = ['sessionData', '$window'];
-    function DataService(sessionData, $window) {
+
+    Auth.$inject = ['rootRef', '$firebaseAuth'];
+    function Auth(rootRef, $firebaseAuth) {
+        return $firebaseAuth(rootRef);
+    }
+
+    DataService.$inject = ['rootRef'];
+    function DataService(rootRef) {
         var ds = this;
         ds.data = {};
         ds.logout = logout;
-        ds.setData = setData;
-        ds.initData = initData;
         ds.isLoggedIn = isLoggedIn;
 
-        initData();
-
-        function initData() {
-            ds.data = JSON.parse($window.localStorage[sessionData] || '{}');
-            return ds.data;
-        }
-
-        function setData(data) {
-            ds.data = data;
-            $window.localStorage[sessionData] = JSON.stringify(data);
-        }
+        rootRef.onAuth(function(authData) {
+            if (authData) {
+                console.log("Authenticated with uid:", authData.uid);
+                ds.data = angular.merge(ds.data, authData);
+                console.log(ds.data);
+            } else {
+                console.log("Client unauthenticated.")
+            }
+        });
 
         function logout() {
-            setData({});
+            rootRef.unauth();
         }
 
         function isLoggedIn() {
             return ds.data.facebook || ds.data.google;
         }
-    }
-
-    Auth.$inject = ['rootRef', '$firebaseAuth'];
-    function Auth(rootRef, $firebaseAuth) {
-        return $firebaseAuth(rootRef);
     }
 
     function Chats() {

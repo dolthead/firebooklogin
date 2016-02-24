@@ -37,14 +37,14 @@
             // set up state handlers for authentication enforcement
             $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                 if (error === 'AUTH_REQUIRED') {
-                    e.preventDefault(); // stop current execution
+                    event.preventDefault(); // stop current execution
                     $state.go('login');
                 }
             });
 
-            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 if (!DataService.isLoggedIn() && toState.name !== "login") {
-                    e.preventDefault(); // stop current execution
+                    event.preventDefault(); // stop current execution
                     $state.go('login'); // go to login
                 }
             });
@@ -76,8 +76,7 @@
                 }
             })
 
-            // Each tab has its own nav history stack:
-
+            // Each tab has its own nav history stack
             .state('tab.dash', {
                 url: '/dash',
                 views: {

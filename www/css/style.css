@@ -2,3 +2,8 @@
 .button-stable {
   border: 1px solid #ddd !important;
 }
+.chat-content img {
+    width: 64px;
+    height: 64px;
+    border: 1px black dashed;
+}

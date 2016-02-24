@@ -7,6 +7,7 @@
         .controller('LoginCtrl', LoginCtrl)
         .controller('AccountCtrl', AccountCtrl);
 
+
     DashCtrl.$inject = ['DataService'];
     function DashCtrl(DataService) {
         var self = this;
@@ -61,8 +62,9 @@
         self.loginWithFacebook = loginWithFacebook;
 
         $scope.$on('$ionicView.loaded', function () {
+            // if already logged in, go to first tab
             if (DataService.isLoggedIn()) {
-                $state.go('tab.dash'); // already logged in, go to first tab
+                $state.go('tab.dash');
             }
         });
 
