@@ -1,9 +1,17 @@
 <ion-view view-title="Welcome!">
     <ion-content>
+        <h2 class="text-center">Ionic Starter App</h2>
+        <br />
+        <br />
         <div class="padding">
-            <button class="button button-block button-positive"
-                    ng-click="ctrl.loginWithFacebook()">
+            <button class="button button-block button-facebook" ng-click="ctrl.loginWith('facebook')">
                 Login with Facebook
+            </button>
+            <button class="button button-block button-twitter" ng-click="ctrl.loginWith('twitter')">
+                Login with Twitter
+            </button>
+            <button class="button button-block button-balanced" ng-click="ctrl.loginWith('google')">
+                Login with Google
             </button>
         </div>
     </ion-content>

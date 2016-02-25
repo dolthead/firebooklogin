@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.simplybest.ionicstarter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Simplybest Starter</name>
+    <name>Ionic Starter App</name>
     <description>
-        Tab starter with firebase auth and user persistence.
+        Tabs starter with firebase auth and user persistence.
     </description>
     <author email="ionic@simplybest.com" href="http://simplybest.com/">
         Todd Hale

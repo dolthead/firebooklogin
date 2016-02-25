@@ -5,5 +5,19 @@
 .chat-content img {
     width: 64px;
     height: 64px;
-    border: 1px black dashed;
+}
+.tab-dash img {
+    width: 64px;
+    height: 64px;
+}
+.button:hover {
+    opacity: .9;
+}
+.button-facebook, .button-facebook:hover {
+    background-color: darkblue;
+    color: white;
+}
+.button-twitter, .button-twitter:hover {
+    background-color: deepskyblue;
+    color: white;
 }

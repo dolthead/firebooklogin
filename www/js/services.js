@@ -20,11 +20,11 @@
 
         rootRef.onAuth(function(authData) {
             if (authData) {
-                console.log("Authenticated with uid:", authData.uid);
+                //console.log("Authenticated with uid:", authData.uid);
+                //console.log(ds.data);
                 ds.data = angular.merge(ds.data, authData);
-                console.log(ds.data);
             } else {
-                console.log("Client unauthenticated.")
+                //console.log("Client unauthenticated.")
             }
         });
 
@@ -33,7 +33,7 @@
         }
 
         function isLoggedIn() {
-            return ds.data.facebook || ds.data.google;
+            return ds.data.facebook || ds.data.google || ds.data.twitter;
         }
     }
 

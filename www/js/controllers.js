@@ -15,6 +15,7 @@
         self.openWindow = openWindow;
 
         function openWindow(url) {
+            // make sure you have this: cordova plugin add cordova-plugin-inappbrowser
             window.open(url, '_blank', 'location=yes');
             return false;
         }
@@ -47,7 +48,7 @@
         var self = this;
         self.logout = logout;
         self.settings = {
-            enableFriends: true
+            //enableFriends: true
         };
 
         function logout() {
@@ -56,27 +57,29 @@
         }
     }
 
-    LoginCtrl.$inject = ['Auth', '$state', 'DataService', '$timeout', '$scope'];
-    function LoginCtrl(Auth, $state, DataService, $timeout, $scope) {
+    LoginCtrl.$inject = ['Auth', '$state', 'DataService', '$timeout', '$scope', '$ionicHistory'];
+    function LoginCtrl(Auth, $state, DataService, $timeout, $scope, $ionicHistory) {
         var self = this;
-        self.loginWithFacebook = loginWithFacebook;
+        self.loginWith = loginWith;
 
         $scope.$on('$ionicView.loaded', function () {
             // if already logged in, go to first tab
             if (DataService.isLoggedIn()) {
+                $ionicHistory.nextViewOptions({historyRoot: true});
                 $state.go('tab.dash');
             }
         });
 
-        function loginWithFacebook() {
-            Auth.$authWithOAuthPopup('facebook')
+        function loginWith(provider) {
+            Auth.$authWithOAuthPopup(provider)
                 .then(function (authData) {
-                    DataService.data.facebook = authData.facebook;
+                    DataService.data[provider] = authData[provider];
                     $timeout(function () {
                         $state.go('tab.dash');
                     });
                 });
         }
+
     }
 
 }());
