@@ -1,8 +1,25 @@
 <ion-view view-title="{{ ctrl.chat.name }}">
-  <ion-content class="padding chat-content">
-    <img ng-src="{{ ctrl.chat.face }}">
-    <p>
-      {{ ctrl.chat.lastText }}
-    </p>
-  </ion-content>
+    <ion-content class="padding chat-content">
+        <!--<div class="text-center">-->
+            <!--<img ng-src="{{ ctrl.chat.imgUrl }}">-->
+        <!--</div>-->
+        <div class="itemx item-input-inset">
+            <label class="item-input-wrapper">
+                <input type="text" ng-model="ctrl.newMessage" ng-keydown="ctrl.keyUp($event)"
+                       autocorrect="off" autocapitalize="off" placeholder="type a message"/>
+            </label>
+            <button class="button button-small button-positive"ng-click="ctrl.send()">send</button>
+        </div>
+
+        <div ng-repeat="chat in ctrl.chats track by $index" class="message"
+                ng-class="chat.fromUid == ctrl.fromUid ? 'message-mine' : 'message-theirs'">
+            <div>
+                <img class="message-img" ng-src="{{ ctrl.getImageURL(chat.fromUid) }}">
+            </div>
+            <div class="txt">
+                {{ chat.message }}
+            </div>
+            <br clear="both" />
+        </div>
+    </ion-content>
 </ion-view>

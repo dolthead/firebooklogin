@@ -2,10 +2,10 @@
 .button-stable {
   border: 1px solid #ddd !important;
 }
-.chat-content img {
-    width: 64px;
-    height: 64px;
-}
+/*.chat-content img {*/
+    /*width: 64px;*/
+    /*height: 64px;*/
+/*}*/
 .tab-dash img {
     width: 64px;
     height: 64px;
@@ -20,4 +20,25 @@
 .button-twitter, .button-twitter:hover {
     background-color: deepskyblue;
     color: white;
+}
+.message div.txt {
+    border-radius: 5px;
+    border: lightgray 1px solid;
+    padding: 1px 5px;
+    /*display: inline;*/
+    margin-bottom: 2px;
+}
+.message-mine div {
+    float: left;
+    color: dimgray;
+}
+.message-theirs div {
+    float: right;
+    font-weight: bold;
+}
+.message-img {
+    height: 20px;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
 }

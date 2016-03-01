@@ -1,9 +1,27 @@
 (function () {
 
     angular.module('starter.services', [])
+        .factory('Users', Users)
         .factory('Auth', Auth)
         .service('DataService', DataService)
         .factory('Chats', Chats);
+
+
+    Users.$inject = ['rootRef', '$firebaseArray'];
+    function Users(rootRef, $firebaseArray) {
+        var users = $firebaseArray(rootRef.child('users'));
+
+        var Users = {
+            get: function(uid){
+                return users.$getRecord(uid);
+            },
+            all: function() {
+                return users;
+            }
+        };
+
+        return Users;
+    }
 
 
     Auth.$inject = ['rootRef', '$firebaseAuth'];
@@ -11,22 +29,36 @@
         return $firebaseAuth(rootRef);
     }
 
+
     DataService.$inject = ['rootRef'];
     function DataService(rootRef) {
         var ds = this;
         ds.data = {};
         ds.logout = logout;
         ds.isLoggedIn = isLoggedIn;
+        ds.storeUser = storeUser;
 
         rootRef.onAuth(function(authData) {
             if (authData) {
-                //console.log("Authenticated with uid:", authData.uid);
-                //console.log(ds.data);
                 ds.data = angular.merge(ds.data, authData);
+                console.log(ds.data);
+                rootRef.child('users').child(authData.uid).update({
+                    lastActive: Firebase.ServerValue.TIMESTAMP
+                });
             } else {
                 //console.log("Client unauthenticated.")
             }
         });
+
+        function storeUser(authData) {
+            rootRef.child('users').child(authData.uid).set({
+                uid: authData.uid,
+                name: authData[authData.provider].displayName,
+                imgUrl: authData[authData.provider].profileImageURL,
+                lastLogin: Firebase.ServerValue.TIMESTAMP,
+                lastActive: Firebase.ServerValue.TIMESTAMP
+            });
+        }
 
         function logout() {
             rootRef.unauth();
@@ -37,51 +69,58 @@
         }
     }
 
-    function Chats() {
-        // Might use a resource here that returns a JSON array
 
-        // Some fake testing data
-        var chats = [{
-            id: 0,
-            name: 'Ben Sparrow',
-            lastText: 'You on your way?',
-            face: 'img/ben.png'
-        }, {
-            id: 1,
-            name: 'Max Lynx',
-            lastText: 'Hey, it\'s me',
-            face: 'img/max.png'
-        }, {
-            id: 2,
-            name: 'Adam Bradleyson',
-            lastText: 'I should buy a boat',
-            face: 'img/adam.jpg'
-        }, {
-            id: 3,
-            name: 'Perry Governor',
-            lastText: 'Look at my mukluks!',
-            face: 'img/perry.png'
-        }, {
-            id: 4,
-            name: 'Mike Harrington',
-            lastText: 'This is wicked good ice cream.',
-            face: 'img/mike.png'
-        }];
+    Chats.$inject = ['$firebaseArray', 'rootRef'];
+    function Chats($firebaseArray, rootRef) {
+
+        var self = this;
+        self.fromUid = undefined;
+        self.toUid = undefined;
+        self.combinedUids = undefined;  // sorted slash-delimited list of users: 'user1/user2'
+        self.chats = undefined;
+
+
+        function combineUids(fromUid, toUid) {
+            return (fromUid < toUid ? fromUid + '/' + toUid : toUid + '/' + fromUid);
+        }
+
+
+        function init(fromUid, toUid) {
+            self.fromUid = fromUid;
+            self.toUid = toUid;
+            self.combinedUids = combineUids(fromUid, toUid);
+            self.chats = $firebaseArray(rootRef.child('chats/' + self.combinedUids));
+        }
 
         return {
+            lastMessage: function(fromUid, toUid) {
+
+            },
+            reset: function() {
+                self.combinedUids = undefined;
+            },
+            add: function(message, fromUid, toUid) {
+                if (!self.combinedUids) {
+                    init(fromUid, toUid);
+                }
+                var chat = {
+                    fromUid: fromUid,
+                    message: message,
+                    timestamp: Firebase.ServerValue.TIMESTAMP
+                };
+                return self.chats.$add(chat);
+            },
+            get: function(fromUid, toUid) {
+                if (!self.combinedUids) {
+                    init(fromUid, toUid);
+                }
+                return self.chats;
+            },
             all: function () {
-                return chats;
+                //return self.chats;
             },
             remove: function (chat) {
-                chats.splice(chats.indexOf(chat), 1);
-            },
-            get: function (chatId) {
-                for (var i = 0; i < chats.length; i++) {
-                    if (chats[i].id === parseInt(chatId)) {
-                        return chats[i];
-                    }
-                }
-                return null;
+                //chats.splice(chats.indexOf(chat), 1);
             }
         };
     }

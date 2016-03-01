@@ -24,6 +24,8 @@
 
         $ionicPlatform.ready(function () {
 
+            //$timeout(function() { $cordovaSplashscreen.hide(); });
+
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard for form inputs)
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -56,8 +58,6 @@
     AppConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
     function AppConfig($stateProvider, $urlRouterProvider) {
 
-        //$localStorageProvider.setKeyPrefix('');
-
         $stateProvider
 
             .state('login', {
@@ -79,6 +79,7 @@
             // Each tab has its own nav history stack
             .state('tab.dash', {
                 url: '/dash',
+                cache: false,
                 views: {
                     'tab-dash': {
                         templateUrl: 'templates/tab-dash.html',
@@ -89,6 +90,7 @@
 
             .state('tab.chats', {
                 url: '/chats',
+                cache: false,
                 views: {
                     'tab-chats': {
                         templateUrl: 'templates/tab-chats.html',
@@ -98,8 +100,9 @@
             })
 
             .state('tab.chat-detail', {
-                url: '/chats/:chatId',
+                url: '/chats/:uid',
                 views: {
+                    cache: false,
                     'tab-chats': {
                         templateUrl: 'templates/chat-detail.html',
                         controller: 'ChatDetailCtrl as ctrl'
