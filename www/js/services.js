@@ -70,8 +70,8 @@
     }
 
 
-    Chats.$inject = ['$firebaseArray', 'rootRef'];
-    function Chats($firebaseArray, rootRef) {
+    Chats.$inject = ['$firebaseArray', 'rootRef', '$ionicScrollDelegate'];
+    function Chats($firebaseArray, rootRef, $ionicScrollDelegate) {
 
         var self = this;
         self.fromUid = undefined;
@@ -90,6 +90,9 @@
             self.toUid = toUid;
             self.combinedUids = combineUids(fromUid, toUid);
             self.chats = $firebaseArray(rootRef.child('chats/' + self.combinedUids));
+            self.chats.$watch(function(){
+                $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
+            });
         }
 
         return {

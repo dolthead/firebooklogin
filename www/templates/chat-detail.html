@@ -1,5 +1,7 @@
 <ion-view view-title="{{ ctrl.chat.name }}">
-    <ion-content class="padding chat-content">
+
+    <ion-header-bar class="search-bar">
+
         <div class="itemx item-input-inset">
             <label class="item-input-wrapper">
                 <input type="text" ng-model="ctrl.newMessage" ng-keydown="ctrl.keyUp($event)"
@@ -7,6 +9,10 @@
             </label>
             <button class="button button-small button-positive"ng-click="ctrl.send()">send</button>
         </div>
+
+    </ion-header-bar>
+
+    <ion-content class="padding chat-content" delegate-handle="chatScroll">
 
         <div ng-repeat="chat in ctrl.chats track by $index" class="message"
                 ng-class="chat.fromUid == ctrl.fromUid ? 'message-mine' : 'message-theirs'">
@@ -18,5 +24,7 @@
             </div>
             <br clear="both" />
         </div>
+
     </ion-content>
+
 </ion-view>

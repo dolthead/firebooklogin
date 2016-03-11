@@ -5,7 +5,8 @@
             'starter.controllers',
             'starter.services',
             'firebase',
-            'ngAnimate'
+            'ngAnimate',
+            'ngCordova'
         ])
         .constant('FirebaseUrl', 'https://firebooklogin.firebaseio.com/')
         .service('rootRef', ['FirebaseUrl', Firebase])

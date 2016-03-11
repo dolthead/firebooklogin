@@ -8,16 +8,32 @@
         .controller('AccountCtrl', AccountCtrl);
 
 
-    DashCtrl.$inject = ['DataService'];
-    function DashCtrl(DataService) {
+    DashCtrl.$inject = ['DataService', '$cordovaSocialSharing'];
+    function DashCtrl(DataService, $cordovaSocialSharing) {
         var self = this;
         self.data = DataService.data;
         self.openWindow = openWindow;
+        self.share = share;
 
         function openWindow(url) {
             // make sure you have this: cordova plugin add cordova-plugin-inappbrowser
             window.open(url, '_blank', 'location=yes');
             return false;
+        }
+
+        function share() {
+            var message = 'Firechat with me (' + DataService.data[DataService.data.provider].displayName + ')';
+            var subject = 'Firechat app/website';
+            var file = 'img/icon-small@3x.png';
+            var link = 'https://firebooklogin.firebaseio.com';
+            $cordovaSocialSharing.share(message, subject, file, link)
+                .then(function(result) {
+                    console.log('shared');
+                    //
+                }, function(err) {
+                    console.log('not shared');
+                   //
+                });
         }
     }
 
