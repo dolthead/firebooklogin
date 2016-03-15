@@ -23,6 +23,9 @@
 .search-bar {
     margin-top: 42px;
 }
+.search-bar div {
+    width: 100%;
+}
 .message div.txt {
     border-radius: 5px;
     border: lightgray 1px solid;
@@ -44,4 +47,7 @@
     margin-right: 5px;
     margin-left: 5px;
     border-radius: 50%;
+}
+.tab-dash div+div {
+    margin-top: .4em;
 }

@@ -8,8 +8,8 @@
         .controller('AccountCtrl', AccountCtrl);
 
 
-    DashCtrl.$inject = ['DataService', '$cordovaSocialSharing'];
-    function DashCtrl(DataService, $cordovaSocialSharing) {
+    DashCtrl.$inject = ['DataService', '$cordovaSocialSharing', '$rootScope'];
+    function DashCtrl(DataService, $cordovaSocialSharing, $rootScope) {
         var self = this;
         self.data = DataService.data;
         self.openWindow = openWindow;
@@ -26,14 +26,19 @@
             var subject = 'Firechat app/website';
             var file = 'img/icon-small@3x.png';
             var link = 'https://firebooklogin.firebaseio.com';
-            $cordovaSocialSharing.share(message, subject, file, link)
-                .then(function(result) {
-                    console.log('shared');
-                    //
-                }, function(err) {
-                    console.log('not shared');
-                   //
-                });
+            if (window.cordova) {
+                $cordovaSocialSharing.share(message, subject, file, link)
+                    .then(function (result) {
+                        console.log('shared');
+                        //
+                    }, function (err) {
+                        console.log('not shared');
+                        //
+                    });
+            }
+            else {
+                console.log('no cordova');
+            }
         }
     }
 
@@ -46,8 +51,8 @@
     }
 
 
-    ChatDetailCtrl.$inject = ['$scope', '$stateParams', 'Chats', 'Users', 'DataService'];
-    function ChatDetailCtrl($scope, $stateParams, Chats, Users, DataService) {
+    ChatDetailCtrl.$inject = ['$scope', '$stateParams', 'Chats', 'Users', 'DataService', '$ionicScrollDelegate'];
+    function ChatDetailCtrl($scope, $stateParams, Chats, Users, DataService, $ionicScrollDelegate) {
         var self = this;
         self.newMessage = '';
         self.fromUid = DataService.data.uid;
@@ -62,6 +67,7 @@
 
         $scope.$on('$ionicView.beforeEnter', function () {
             Chats.reset();
+            $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
         });
 
         function getImageURL(uid) {
@@ -70,7 +76,7 @@
 
         function send() {
             if (self.newMessage.trim()) {
-                console.log(self.newMessage);
+                //console.log(self.newMessage);
                 Chats.add(self.newMessage, self.fromUid, self.toUid).then(function(){
                     clear();
                 });

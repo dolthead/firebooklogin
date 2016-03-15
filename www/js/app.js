@@ -6,7 +6,8 @@
             'starter.services',
             'firebase',
             'ngAnimate',
-            'ngCordova'
+            'ngCordova',
+            '720kb.socialshare'
         ])
         .constant('FirebaseUrl', 'https://firebooklogin.firebaseio.com/')
         .service('rootRef', ['FirebaseUrl', Firebase])
