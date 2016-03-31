@@ -2,10 +2,6 @@
 .button-stable {
   border: 1px solid #ddd !important;
 }
-.chat-content img {
-    width: 64px;
-    height: 64px;
-}
 .tab-dash img {
     width: 64px;
     height: 64px;
@@ -20,4 +16,38 @@
 .button-twitter, .button-twitter:hover {
     background-color: deepskyblue;
     color: white;
+}
+.chat-content {
+    margin-top: 35px;
+}
+.search-bar {
+    margin-top: 42px;
+}
+.search-bar div {
+    width: 100%;
+}
+.message div.txt {
+    border-radius: 5px;
+    border: lightgray 1px solid;
+    padding: 1px 5px;
+    max-width: 75%;
+    /*display: inline;*/
+    margin-bottom: 2px;
+}
+.message-mine div {
+    float: left;
+    color: dimgray;
+}
+.message-theirs div {
+    float: right;
+    font-weight: bold;
+}
+.message-img {
+    height: 2em;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+}
+.tab-dash div+div {
+    margin-top: .4em;
 }

@@ -8,40 +8,96 @@
         .controller('AccountCtrl', AccountCtrl);
 
 
-    DashCtrl.$inject = ['DataService'];
-    function DashCtrl(DataService) {
+    DashCtrl.$inject = ['DataService', '$cordovaSocialSharing', '$rootScope'];
+    function DashCtrl(DataService, $cordovaSocialSharing, $rootScope) {
         var self = this;
         self.data = DataService.data;
         self.openWindow = openWindow;
+        self.share = share;
 
         function openWindow(url) {
             // make sure you have this: cordova plugin add cordova-plugin-inappbrowser
             window.open(url, '_blank', 'location=yes');
             return false;
         }
+
+        function share() {
+            var message = 'Firechat with me (' + DataService.data[DataService.data.provider].displayName + ')';
+            var subject = 'Firechat app/website';
+            var file = 'img/icon-small@3x.png';
+            var link = 'https://firebooklogin.firebaseio.com';
+            if (window.cordova) {
+                $cordovaSocialSharing.share(message, subject, file, link)
+                    .then(function (result) {
+                        console.log('shared');
+                        //
+                    }, function (err) {
+                        console.log('not shared');
+                        //
+                    });
+            }
+            else {
+                console.log('no cordova');
+            }
+        }
     }
 
-    ChatsCtrl.$inject = ['Chats'];
-    function ChatsCtrl(Chats) {
-        // With the new view caching in Ionic, Controllers are only called
-        // when they are recreated or on app start, instead of every page change.
-        // To listen for when this page is active (for example, to refresh data),
-        // listen for the $ionicView.enter event:
-        //
-        //$scope.$on('$ionicView.enter', function(e) {
-        //});
+
+    ChatsCtrl.$inject = ['Users', 'DataService'];
+    function ChatsCtrl(Users, DataService) {
         var self = this;
-        self.chats = Chats.all();
-        self.remove = function (chatId) {
-            Chats.remove(chatId);
-        };
+        self.users = Users.all();
+        self.uid = DataService.data.uid;
     }
 
-    ChatDetailCtrl.$inject = ['$stateParams', 'Chats'];
-    function ChatDetailCtrl($stateParams, Chats) {
+
+    ChatDetailCtrl.$inject = ['$scope', '$stateParams', 'Chats', 'Users', 'DataService', '$ionicScrollDelegate'];
+    function ChatDetailCtrl($scope, $stateParams, Chats, Users, DataService, $ionicScrollDelegate) {
         var self = this;
-        self.chat = Chats.get($stateParams.chatId);
+        self.newMessage = '';
+        self.fromUid = DataService.data.uid;
+        self.toUid = $stateParams.uid;
+        self.fromUser = Users.get(self.fromUid);
+        self.toUser = Users.get(self.toUid);
+        self.chats = Chats.get(self.fromUid, self.toUid);
+        self.keyUp = keyUp;
+        self.send = send;
+        self.getImageURL = getImageURL;
+
+
+        $scope.$on('$ionicView.beforeEnter', function () {
+            Chats.reset();
+            $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
+        });
+
+        function getImageURL(uid) {
+            return (uid == self.fromUid ? self.fromUser.imgUrl : self.toUser.imgUrl);
+        }
+
+        function send() {
+            if (self.newMessage.trim()) {
+                //console.log(self.newMessage);
+                Chats.add(self.newMessage, self.fromUid, self.toUid).then(function(){
+                    clear();
+                });
+            }
+        }
+
+        function keyUp(keyEvent) {
+            if (keyEvent.keyCode == 13)
+            {
+                self.send();
+            }
+            else if (keyEvent.keyCode == 27)
+            {
+                clear();
+            }
+        }
+        function clear() {
+            self.newMessage = '';
+        }
     }
+
 
     AccountCtrl.$inject = ['DataService', '$state'];
     function AccountCtrl(DataService, $state) {
@@ -56,6 +112,7 @@
             $state.go('login');
         }
     }
+
 
     LoginCtrl.$inject = ['Auth', '$state', 'DataService', '$timeout', '$scope', '$ionicHistory'];
     function LoginCtrl(Auth, $state, DataService, $timeout, $scope, $ionicHistory) {
@@ -74,6 +131,7 @@
             Auth.$authWithOAuthPopup(provider)
                 .then(function (authData) {
                     DataService.data[provider] = authData[provider];
+                    DataService.storeUser(authData);
                     $timeout(function () {
                         $state.go('tab.dash');
                     });
