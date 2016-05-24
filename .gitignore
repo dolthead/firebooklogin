@@ -12,3 +12,5 @@ www/lib
 .editorconfig
 
 .io-config.json
+
+resources/ios
