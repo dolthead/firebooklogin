@@ -2,30 +2,30 @@
     <ion-content class="padding tab-dash">
 
         <div ng-show="ctrl.data.provider === 'facebook'">
-            <p>{{ ctrl.data.facebook.displayName }}, booker</p>
+            <p>{{ ctrl.data.facebook.displayName }}, fbooker</p>
             <img ng-show="ctrl.data.facebook.profileImageURL" ng-src="{{ ctrl.data.facebook.profileImageURL }}">
             <br />
-            <a href="#" ng-click="ctrl.openWindow(ctrl.data.facebook.cachedUserProfile.link)"
+            <a href="#" ng-click="ctrl.openFacebookWindow()"
                class="button button-small button-facebook" ng-show="ctrl.data.facebook.cachedUserProfile.link">
                 Facebook page
             </a>
         </div>
 
         <div ng-show="ctrl.data.provider === 'twitter'" >
-            <p>{{ ctrl.data.twitter.displayName }}, tweeter</p>
+            <p>{{ ctrl.data.twitter.displayName }}, twitterer</p>
             <img ng-show="ctrl.data.twitter.profileImageURL" ng-src="{{ ctrl.data.twitter.profileImageURL }}">
             <br />
-            <a href="#" ng-click="ctrl.openWindow('https://twitter.com/' + ctrl.data.twitter.username)"
+            <a href="#" ng-click="ctrl.openTwitterWindow()"
                 class="button button-small button-twitter">
                 Twitter page
             </a>
         </div>
 
         <div ng-show="ctrl.data.provider === 'google'">
-            <p>{{ ctrl.data.google.displayName }}, googler</p>
+            <p>{{ ctrl.data.google.displayName }}, googlier</p>
             <img ng-show="ctrl.data.google.profileImageURL" ng-src="{{ ctrl.data.google.profileImageURL }}">
             <br />
-            <a href="#" ng-click="ctrl.openWindow(ctrl.data.google.cachedUserProfile.link)"
+            <a href="#" ng-click="ctrl.openGoogleWindow()"
                 class="button button-small button-balanced" ng-show="ctrl.data.google.cachedUserProfile.link">
                 Google+ page
             </a>

@@ -8,11 +8,25 @@
     function WelcomeCtrl(User, $cordovaSocialSharing) {
         var self = this;
         self.data = User.data;
-        self.openWindow = openWindow;
+        self.openGoogleWindow = openGoogleWindow;
+        self.openFacebookWindow = openFacebookWindow;
+        self.openTwitterWindow = openTwitterWindow;
         self.share = share;
+        
+        function openGoogleWindow() {
+            openWindow(self.data.google.cachedUserProfile.link);
+        }
+
+        function openFacebookWindow() {
+            openWindow(self.data.facebook.cachedUserProfile.link);
+        }
+
+        function openTwitterWindow() {
+            openWindow('https://twitter.com/' + self.data.twitter.username);
+        }
 
         function openWindow(url) {
-            // make sure you have this: ionic plugin add cordova-plugin-inappbrowser
+            // make sure you have installed this plugin: ionic plugin add cordova-plugin-inappbrowser
             window.open(url, '_blank', 'location=yes');
             return false;
         }

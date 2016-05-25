@@ -17,12 +17,6 @@
     background-color: deepskyblue;
     color: white;
 }
-.chat-content {
-    margin-top: 35px;
-}
-.search-bar {
-    margin-top: 42px;
-}
 .search-bar div {
     width: 100%;
 }
@@ -31,7 +25,6 @@
     border: lightgray 1px solid;
     padding: 1px 5px;
     max-width: 75%;
-    /*display: inline;*/
     margin-bottom: 2px;
 }
 .message-mine div {
