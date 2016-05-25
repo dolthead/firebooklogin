@@ -1,7 +1,6 @@
 <ion-view view-title="{{ ctrl.chat.name }}">
 
     <ion-footer-bar class="search-bar">
-
         <div class="itemx item-input-inset">
             <label class="item-input-wrapper">
                 <input type="text" ng-model="ctrl.newMessage" ng-keydown="ctrl.keyUp($event)"
@@ -9,7 +8,6 @@
             </label>
             <button class="button button-small button-positive"ng-click="ctrl.send()">send</button>
         </div>
-
     </ion-footer-bar>
 
     <ion-content class="padding chat-content" delegate-handle="chatScroll">

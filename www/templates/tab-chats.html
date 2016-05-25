@@ -1,17 +1,20 @@
 <ion-view view-title="Chats">
-  <ion-content>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right"
-                ng-repeat="user in ctrl.users | filter:{uid:'!'+ctrl.uid}" type="item-text-wrap" href="#/tab/chats/{{user.uid}}">
-        <img ng-src="{{user.imgUrl}}">
-        <h2>{{user.name}}</h2>
-        <p>{{ 'last message' }}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
 
-        <!--<ion-option-button class="button-assertive" ng-click="ctrl.remove(chat)">-->
-          <!--Delete-->
-        <!--</ion-option-button>-->
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right"
+                      ng-repeat="user in ctrl.users | filter:{uid:'!'+ctrl.uid}" type="item-text-wrap"
+                      href="#/tab/chats/{{user.uid}}">
+                <img ng-src="{{user.imgUrl}}">
+                <h2>{{user.name}}</h2>
+                <p>{{ 'last message' }}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+
+                <!--<ion-option-button class="button-assertive" ng-click="ctrl.remove(chat)">-->
+                <!--Delete-->
+                <!--</ion-option-button>-->
+            </ion-item>
+        </ion-list>
+    </ion-content>
+
 </ion-view>

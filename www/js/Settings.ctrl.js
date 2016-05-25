@@ -6,17 +6,19 @@
 
     SettingsCtrl.$inject = ['User', '$state'];
     function SettingsCtrl(User, $state) {
+        
         var self = this;
-        self.logout = logout;
         self.settings = {
             //enableFriends: true
         };
+        self.logout = logout;
+
+        // public functions
 
         function logout() {
             User.logout();
             $state.go('login');
         }
     }
-
 
 }());

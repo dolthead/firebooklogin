@@ -6,16 +6,19 @@
 
     User.$inject = ['rootRef'];
     function User(rootRef) {
-        var ds = this;
-        ds.data = {};
-        ds.logout = logout;
-        ds.isLoggedIn = isLoggedIn;
-        ds.storeUser = storeUser;
+        
+        var self = this;
+        self.data = {};
+        self.updateUser = updateUser;
+        self.logout = logout;
+        self.isLoggedIn = isLoggedIn;
+
+        // load auth data
 
         rootRef.onAuth(function(authData) {
             if (authData) {
-                ds.data = angular.merge(ds.data, authData);
-                console.log(ds.data);
+                self.data = angular.merge(self.data, authData);
+                console.log(self.data);
                 rootRef.child('users').child(authData.uid).update({
                     lastActive: Firebase.ServerValue.TIMESTAMP
                 });
@@ -24,7 +27,9 @@
             }
         });
 
-        function storeUser(authData) {
+        // public functions
+
+        function updateUser(authData) {
             rootRef.child('users').child(authData.uid).set({
                 uid: authData.uid,
                 name: authData[authData.provider].displayName,
@@ -39,7 +44,7 @@
         }
 
         function isLoggedIn() {
-            return ds.data.facebook || ds.data.google || ds.data.twitter;
+            return self.data.facebook || self.data.google || self.data.twitter;
         }
     }
 

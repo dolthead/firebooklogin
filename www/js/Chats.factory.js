@@ -13,11 +13,11 @@
         self.combinedUids = undefined;  // sorted slash-delimited list of users: 'user1/user2'
         self.chats = undefined;
 
+        // private functions
 
         function combineUids(fromUid, toUid) {
             return (fromUid < toUid ? fromUid + '/' + toUid : toUid + '/' + fromUid);
         }
-
 
         function init(fromUid, toUid) {
             self.fromUid = fromUid;
@@ -29,7 +29,9 @@
             });
         }
 
-        return {
+        // public interface
+
+        var ChatsInterface = {
             lastMessage: function(fromUid, toUid) {
 
             },
@@ -60,6 +62,8 @@
                 //chats.splice(chats.indexOf(chat), 1);
             }
         };
+
+        return ChatsInterface;
     }
 
 }());

@@ -106,8 +106,8 @@
 
             .state('tab.chat-detail', {
                 url: '/chats/:uid',
+                cache: false,
                 views: {
-                    cache: false,
                     'tab-chats': {
                         templateUrl: 'templates/chat-detail.html',
                         controller: 'ChatDetailCtrl as ctrl'
