@@ -1,74 +1,8 @@
 (function () {
 
-    angular.module('starter.services', [])
-        .factory('Users', Users)
-        .factory('Auth', Auth)
-        .service('DataService', DataService)
+    angular.module('starter')
         .factory('Chats', Chats);
-
-
-    Users.$inject = ['rootRef', '$firebaseArray'];
-    function Users(rootRef, $firebaseArray) {
-        var users = $firebaseArray(rootRef.child('users'));
-
-        var Users = {
-            get: function(uid){
-                return users.$getRecord(uid);
-            },
-            all: function() {
-                return users;
-            }
-        };
-
-        return Users;
-    }
-
-
-    Auth.$inject = ['rootRef', '$firebaseAuth'];
-    function Auth(rootRef, $firebaseAuth) {
-        return $firebaseAuth(rootRef);
-    }
-
-
-    DataService.$inject = ['rootRef'];
-    function DataService(rootRef) {
-        var ds = this;
-        ds.data = {};
-        ds.logout = logout;
-        ds.isLoggedIn = isLoggedIn;
-        ds.storeUser = storeUser;
-
-        rootRef.onAuth(function(authData) {
-            if (authData) {
-                ds.data = angular.merge(ds.data, authData);
-                console.log(ds.data);
-                rootRef.child('users').child(authData.uid).update({
-                    lastActive: Firebase.ServerValue.TIMESTAMP
-                });
-            } else {
-                //console.log("Client unauthenticated.")
-            }
-        });
-
-        function storeUser(authData) {
-            rootRef.child('users').child(authData.uid).set({
-                uid: authData.uid,
-                name: authData[authData.provider].displayName,
-                imgUrl: authData[authData.provider].profileImageURL,
-                lastLogin: Firebase.ServerValue.TIMESTAMP,
-                lastActive: Firebase.ServerValue.TIMESTAMP
-            });
-        }
-
-        function logout() {
-            rootRef.unauth();
-        }
-
-        function isLoggedIn() {
-            return ds.data.facebook || ds.data.google || ds.data.twitter;
-        }
-    }
-
+    
 
     Chats.$inject = ['$firebaseArray', 'rootRef', '$ionicScrollDelegate'];
     function Chats($firebaseArray, rootRef, $ionicScrollDelegate) {

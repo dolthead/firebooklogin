@@ -2,7 +2,7 @@
 .button-stable {
   border: 1px solid #ddd !important;
 }
-.tab-dash img {
+.tab-welcome img {
     width: 64px;
     height: 64px;
 }
@@ -48,6 +48,6 @@
     margin-left: 5px;
     border-radius: 50%;
 }
-.tab-dash div+div {
+.tab-welcome div+div {
     margin-top: .4em;
 }

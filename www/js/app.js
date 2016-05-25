@@ -2,17 +2,21 @@
 
     angular.module('starter', [
             'ionic',
-            'starter.controllers',
-            'starter.services',
             'firebase',
             'ngAnimate',
             'ngCordova'
         ])
         .constant('FirebaseUrl', 'https://firebooklogin.firebaseio.com/')
         .service('rootRef', ['FirebaseUrl', Firebase])
+        .factory('Auth', Auth)
         .run(AppRun)
         .config(AppConfig);
 
+
+    Auth.$inject = ['rootRef', '$firebaseAuth'];
+    function Auth(rootRef, $firebaseAuth) {
+        return $firebaseAuth(rootRef);
+    }
 
     // used below for authentication enforcement in state definitions
     AuthDataResolver.$inject = ['Auth'];
@@ -20,8 +24,8 @@
         return Auth.$requireAuth();
     }
 
-    AppRun.$inject = ['$ionicPlatform', '$rootScope', '$state', 'DataService'];
-    function AppRun($ionicPlatform, $rootScope, $state, DataService) {
+    AppRun.$inject = ['$ionicPlatform', '$rootScope', '$state', 'User'];
+    function AppRun($ionicPlatform, $rootScope, $state, User) {
 
         $ionicPlatform.ready(function () {
 
@@ -46,7 +50,7 @@
             });
 
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                if (!DataService.isLoggedIn() && toState.name !== "login") {
+                if (!User.isLoggedIn() && toState.name !== "login") {
                     event.preventDefault(); // stop current execution
                     $state.go('login'); // go to login
                 }
@@ -78,13 +82,13 @@
             })
 
             // Each tab has its own nav history stack
-            .state('tab.dash', {
-                url: '/dash',
+            .state('tab.welcome', {
+                url: '/welcome',
                 cache: false,
                 views: {
-                    'tab-dash': {
-                        templateUrl: 'templates/tab-dash.html',
-                        controller: 'DashCtrl as ctrl'
+                    'tab-welcome': {
+                        templateUrl: 'templates/tab-welcome.html',
+                        controller: 'WelcomeCtrl as ctrl'
                     }
                 }
             })
@@ -111,12 +115,12 @@
                 }
             })
 
-            .state('tab.account', {
-                url: '/account',
+            .state('tab.settings', {
+                url: '/settings',
                 views: {
-                    'tab-account': {
-                        templateUrl: 'templates/tab-account.html',
-                        controller: 'AccountCtrl as ctrl'
+                    'tab-settings': {
+                        templateUrl: 'templates/tab-settings.html',
+                        controller: 'SettingsCtrl as ctrl'
                     }
                 }
             });
