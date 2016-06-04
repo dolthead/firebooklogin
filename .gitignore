@@ -9,6 +9,10 @@ plugins/
 www/.idea
 www/lib
 
+resources/android/**
+resources/ios/**
+
+
 .editorconfig
 
 .io-config.json
