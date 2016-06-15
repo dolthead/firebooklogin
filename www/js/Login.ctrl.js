@@ -30,7 +30,10 @@
                     $timeout(function () {
                         $state.go('tab.welcome');
                     });
-                });
+                }).catch(function(err) {
+                    self.errorMessage = err.code;
+                console.error(err);
+            });
         }
 
     }

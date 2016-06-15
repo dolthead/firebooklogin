@@ -4,8 +4,8 @@
         .service('User', User);
 
 
-    User.$inject = ['rootRef'];
-    function User(rootRef) {
+    User.$inject = ['rootRef', 'Auth'];
+    function User(rootRef, Auth) {
         
         var self = this;
         self.data = {};
@@ -40,7 +40,8 @@
         }
 
         function logout() {
-            rootRef.unauth();
+            // rootRef.unauth();
+            Auth.$unauth();
         }
 
         function isLoggedIn() {
