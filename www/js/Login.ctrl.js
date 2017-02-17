@@ -4,8 +4,8 @@
         .controller('LoginCtrl', LoginCtrl);
 
 
-    LoginCtrl.$inject = ['Auth', '$state', 'User', '$timeout', '$scope', '$ionicHistory'];
-    function LoginCtrl(Auth, $state, User, $timeout, $scope, $ionicHistory) {
+    LoginCtrl.$inject = ['Auth', '$state', 'User', '$scope', '$ionicHistory'];
+    function LoginCtrl(Auth, $state, User, $scope, $ionicHistory) {
 
         var self = this;
         self.loginWith = loginWith;
@@ -26,8 +26,7 @@
             Auth.$authWithOAuthPopup(provider)
                 .then(function (authData) {
                     User.data[provider] = authData[provider];
-                    User.updateUser(authData);
-                    $timeout(function () {
+                    User.updateUser(authData).then(function(){
                         $state.go('tab.welcome');
                     });
                 }).catch(function(err) {
