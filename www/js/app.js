@@ -6,7 +6,7 @@
             'ngAnimate',
             'ngCordova'
         ])
-        .constant('FirebaseUrl', 'https://<YOURFIREBASEHERE>.firebaseio.com/')
+        .constant('FirebaseUrl', 'https://firebooklogin.firebaseio.com/')
         .service('rootRef', ['FirebaseUrl', Firebase])
         .factory('Auth', Auth)
         .run(AppRun)

@@ -30,7 +30,7 @@
         // public functions
 
         function updateUser(authData) {
-            rootRef.child('users').child(authData.uid).set({
+            return rootRef.child('users').child(authData.uid).set({
                 uid: authData.uid,
                 name: authData[authData.provider].displayName,
                 imgUrl: authData[authData.provider].profileImageURL,
