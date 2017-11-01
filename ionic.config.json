@@ -1,7 +1,9 @@
 {
   "name": "firebooklogin",
   "app_id": "a7f65f26",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic1",
   "watchPatterns": [
     "scss/**/*",
