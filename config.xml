@@ -81,4 +81,7 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
         <variable name="MAX_STORE" value="2" />
     </plugin>
+    <allow-navigation href="http://172.23.13.203:8100" />
+    <engine name="android" spec="~5.1.1" />
+    <engine name="ios" spec="~4.3.1" />
 </widget>
